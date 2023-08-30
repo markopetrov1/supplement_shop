@@ -1,0 +1,48 @@
+{% extends "base_general.html" %}
+
+{% block content %}
+    <nav style="background-color: #D9D9D9 " class="navbar navbar-expand-lg">
+        <div class="w-100 text-center" style="color: #657D47">
+            <h1 class="text-center">{{ supplement.name }}</h1>
+        </div>
+    </nav>
+
+    <div class="vh-100">
+    <form class="mt-5" method="post" action="/supplements/edit/{{ supplement.id }}/">
+                    {% csrf_token %}
+    <div class="container mt-4 mb-3">
+        <div class="row">
+            <div class="col-md-6">
+                <img style="width: 75%" src="{{ supplement.photo.url }}" alt="{{ supplement.name }}" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h5 class="mb-3 mt-3">Производител: 
+                    <input type="text" id="brand" name="brand" class="form-control" value="{{ supplement.brand }}">
+                </h5>
+                <h5 class="mb-3">Шифра на производот: 
+                    <input type="text" id="code" name="code" class="form-control" value="{{ supplement.code }}">
+                </h5>
+                <h5 class="mb-3">Достапност: 
+                    <select id="availability" name="availability" class="form-control">
+                        <option value="1" {% if supplement.availability == True %}selected{% endif %}>На залиха</option>
+                        <option value="0" {% if supplement.availability == False %}selected{% endif %}>Недостапен</option>
+                    </select>
+                </h5>
+                <h5 class="mb-3">Цена: 
+                    <input type="number" id="price" name="price" class="form-control" value="{{ supplement.price }}">
+                </h5>
+
+                    <div class="form-group mt-5">
+                        <input type="hidden" name="supplement" id="supplement" value="{{ supplement.id }}">
+                        <button type="submit" style="background-color: #FAD542" class="btn rounded-pill btn-lg mt-3">Измени</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <textarea id="description" name="description" class="form-control">{{ supplement.description }}</textarea>
+    </div>
+    </form>
+    </div>
+{% endblock %}

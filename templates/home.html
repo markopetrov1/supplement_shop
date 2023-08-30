@@ -1,0 +1,67 @@
+{% extends "base_general.html" %}
+
+{% block content %}
+    <nav style="background-color: #D9D9D9 " class="navbar navbar-expand-lg ">
+        <div class="container-fluid">
+            <form class="d-flex me-auto" method="post" action="{% url 'home' %}">
+                    {% csrf_token %}
+                <select id="category" name="category" class="form-select rounded-pill">
+                    <option value="all">Категории</option>
+                    <option value="proteins">Протеини</option>
+                    <option value="vitamins">Витамини</option>
+                    <option value="pre-workout">Pre-Workout</option>
+                    <option value="creatines">Креатини</option>
+                    <option value="amino-acids">Аминокиселини</option>
+                </select>
+                <button class="btn btn-outline-light mx-2 rounded-pill" type="submit">Филтрирај</button>
+            </form>
+
+            <!-- Search Bar -->
+            <form class="d-flex" method="post" action="{% url 'home' %}">
+                    {% csrf_token %}
+                <input name="search" type="text" id="search" class="form-control me-2 rounded-pill" placeholder="Пребарувај...">
+                <button class="btn btn-outline-light rounded-pill" type="submit">Пребарувај</button>
+            </form>
+        </div>
+    </nav>
+    {% if request.user.is_staff %}
+    <div class="d-flex justify-content-end mx-3 mt-2">
+    <a href="/supplements/add">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="lightgreen" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+        </svg>
+    </a>
+    </div>
+    {% else %}
+
+    {% endif %}
+<div class="container mt-5">
+      {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                         <div class="d-flex justify-content-center">
+                            <h5 class="text-center p-2 w-50 rounded-pill" style="background-color: #e6fdcd; border: 2px solid green">
+                                {{ message }}
+                            </h5>
+                            </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+    <div class="row">
+        {% for supplement in supplements %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <a style="text-decoration: none" href="/supplements/{{ supplement.pk }}">
+            <div class="card text-center h-100">
+                <img style="height:400px; cursor: pointer " src="{{ supplement.photo.url }}" class="card-img-top img-fluid" alt="{{ supplement.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ supplement.name }}</h5>
+                    <p class="card-text">Цена: {{ supplement.price }} ден.</p>
+                </div>
+            </div>
+        </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
